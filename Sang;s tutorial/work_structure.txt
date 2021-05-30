@@ -1,0 +1,92 @@
+All routing path, all put in __init__.py
+
+
+Library:
+import url_for
+import render_template
+
+
+Page Routing List: (including routing logic)
+1.[Main Page]
+	route("\")
+	
+2.[Search Page]
+	app.route("\search")
+	
+	
+	logic:
+		search.html
+			- create form
+				<form method="POST" action="/result">			<-- When click submit the form using POST method, and routing ("/result") is called "__init__.py , app.route("/result"), and pass value
+				<input type="text" name="columnName">Value="Car"<input>		<--- "name" field is key for database, "value" field is value for database.	
+					<button type="submit">						<-- click submit to call POST method
+				</form>
+		
+		__init__.py
+			- create search result routing and you can define GET / POST method to act different respond if you want.
+				1. @app.routing("/result", methods='POST')
+					3種方法處理
+					1.1 (search Database with result, and structure url path to redirect)
+						if request.form != null:				<-- get form all value, and check if no null
+							result = searchDatabaseGetResult(request.form)	<-- can define search Database function to get value
+							return redirect(url_for(result))	<-- use result value to create url and direct to page (e.g. result="Car", url_for(reuslt) will call @app.route("/Car"))
+						
+					1.2 (take value from the form and redirect url path)
+						if request.form != null:				<-- get form all value, and check if no null
+							result = request.form.items()[0][1]	<-- can get value from list e.g. items=[["key","value"]]
+							return redirect(url_for(result))
+					
+					1.3 (take value from the form, and search all category from database, the result with all products pass to render_template)
+						if request.form != null:
+							result = searchAllProductsByCategory(request.form)	<-- get all products from database, and search by Category
+							return render_template("search_result.html", all_products=result) <-- call html, and pass all products result to search_result.html
+							
+					
+						1.3.1 search_result.html
+						
+						{% macro easy_row(data, tag) -%}		<--method (create product image and description)
+							{% for record in data %}
+							<div class="row">
+								{% for item in record %}
+								<div class="col">
+								<{{ tag }}>{{ item }}</{{ tag }}>
+								</div>
+								{% endfor %}
+							</div>
+							{% endfor %}
+							{%- endmacro %}
+							
+							{{ easy_row(all_products, "p") }}	<-- call easy_row method, and loop image and product name
+							</div>
+							
+							{% endblock %}
+						
+				
+				
+					
+				2. @app.routing("/result", methods=['GET', 'POST'])
+				
+			
+		
+	
+3. searchAllProductByCategory()
+4.
+5.
+
+
+
+Reference: 
+
+Url_for Library:
+https://www.cnblogs.com/zhongyehai/p/11768741.html
+
+Handle Multiple Language
+https://dormousehole.readthedocs.io/en/latest/patterns/urlprocessors.html
+
+Jinja2 Language:
+https://stackoverflow.com/questions/48314435/how-to-get-list-in-a-list-in-jinja2-template
+https://stackoverflow.com/questions/49619445/how-to-append-to-a-list-in-jinja2-for-ansible
+
+Python Includes:
+https://pythonprogramming.net/flask-includes-tutorial/
+

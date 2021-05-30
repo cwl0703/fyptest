@@ -1,0 +1,26 @@
+<!-- extend base layout -->
+{% extends "./index_base.html" %}
+
+{% block head_css %}
+        {{ super() }}
+    
+{% endblock %}
+
+{% block content %}
+<div class=container>
+    
+    {% include ('index/index_search.html') %}  
+    <hr>
+    {% include ('index/index_carousel.html') %}
+    <hr>
+    <h1>Category</h1><br>
+       {% include ('index/index_category.html') %}
+    <hr>
+    {% include ('index/index_itemList.html') %}  
+    <hr>
+      {% if not current_user.is_anonymous %}
+             <h1>hello {{current_user.roles[0]}}</h1>
+      {% endif %}
+
+</div>
+{% endblock %}

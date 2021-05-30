@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}賴田捕手：訓練紀錄{% endblock %}
+
+{% block main %}
+
+<div class="container">
+  <div class="row align-items-start">
+  <div class="col">
+    <h1>訓練紀錄</h1>
+  </div>
+
+<!-- 起一個Class -->
+{% macro easy_row(data, tag) -%}
+  {% for record in data %}
+  <div class="row">
+    {% for item in record %}
+    <div class="col">
+    <{{ tag }}>{{ item }}</{{ tag }}>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+{%- endmacro %}
+
+
+<!-- 自己set array -->
+{% set col_names = (("record_no", "alpaca_name", "training", "duration", "date"),) %}
+
+<!-- call Class 用 -->
+{{ easy_row(col_names, "h2") }}
+
+<!-- call Class用 -->
+{{ easy_row(html_records, "p") }}
+</div>
+
+{% endblock %}
